@@ -110,7 +110,7 @@ exports.addEntry = async (req, res, next) => {
 // MONTHLY ENTRIES
 exports.getMonthlyEntries = async (req, res, next) => {
   try {
-    const { month, year } = req.query;
+    const { month, year, page, limit } = req.query;
 
     if (!month || !year) {
       return res.status(400).json({
@@ -139,35 +139,82 @@ exports.getMonthlyEntries = async (req, res, next) => {
       });
     }
 
+    const pageNum = page === undefined ? null : Number(page);
+    const limitNum = limit === undefined ? null : Number(limit);
+    const shouldPaginate = pageNum !== null || limitNum !== null;
+
+    if (shouldPaginate) {
+      if (
+        !Number.isInteger(pageNum) ||
+        !Number.isInteger(limitNum) ||
+        pageNum < 1 ||
+        limitNum < 1
+      ) {
+        return res.status(400).json({
+          message: "Page and limit must be positive integers",
+        });
+      }
+    }
+
     if (!memoryStore.isDbConnected(mongoose)) {
       const entries = memoryStore.getEntriesByMonth(monthNum, yearNum);
       const summary = memoryStore.getSummary(monthNum, yearNum);
+      const paginatedEntries = shouldPaginate
+        ? entries.slice((pageNum - 1) * limitNum, pageNum * limitNum)
+        : entries;
 
-      return res.json({
+      const response = {
         summary: {
           total_bottles: summary.total_bottles,
           total_amount: summary.total_amount,
           delivery_days: summary.delivery_days,
         },
-        entries: entries.map((entry) => ({
+        entries: paginatedEntries.map((entry) => ({
           ...entry,
           id: entry._id,
         })),
-      });
+      };
+
+      if (shouldPaginate) {
+        response.pagination = {
+          page: pageNum,
+          limit: limitNum,
+          total_entries: entries.length,
+          total_pages: Math.ceil(entries.length / limitNum),
+        };
+      }
+
+      return res.json(response);
     }
 
-    const entries = await BottleEntry.find({
+    const query = {
       month: monthNum,
       year: yearNum,
-    })
+    };
+
+    let entriesQuery = BottleEntry.find(query)
       .sort({ date: 1 })
       .select("-__v -createdAt -updatedAt")
       .lean();
 
+    if (shouldPaginate) {
+      entriesQuery = entriesQuery
+        .skip((pageNum - 1) * limitNum)
+        .limit(limitNum);
+    }
+
+    const [entries, allEntriesCount, summaryEntries] = await Promise.all([
+      entriesQuery,
+      shouldPaginate ? BottleEntry.countDocuments(query) : null,
+      shouldPaginate
+        ? BottleEntry.find(query).select("bottle_count amount").lean()
+        : null,
+    ]);
+
     let total_bottles = 0;
     let total_amount = 0;
 
-    entries.forEach((e) => {
+    (summaryEntries || entries).forEach((e) => {
       total_bottles += e.bottle_count;
       total_amount += e.amount;
     });
@@ -177,14 +224,27 @@ exports.getMonthlyEntries = async (req, res, next) => {
       id: e._id.toString(),
     }));
 
-    return res.json({
+    const response = {
       summary: {
         total_bottles,
         total_amount,
-        delivery_days: formattedEntries.length,
+        delivery_days: shouldPaginate
+          ? allEntriesCount
+          : formattedEntries.length,
       },
       entries: formattedEntries,
-    });
+    };
+
+    if (shouldPaginate) {
+      response.pagination = {
+        page: pageNum,
+        limit: limitNum,
+        total_entries: allEntriesCount,
+        total_pages: Math.ceil(allEntriesCount / limitNum),
+      };
+    }
+
+    return res.json(response);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: "server error" });
