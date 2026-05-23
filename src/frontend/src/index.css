@@ -6,7 +6,7 @@
 }
 
 body {
-  background: #F0F1F2;
+  background: #f0f1f2;
   color: #1f2937;
   font-family: "Inter", "Segoe UI", sans-serif;
 }
@@ -17,7 +17,7 @@ h3,
 h4,
 h5,
 h6 {
-  color: #2E3132;
+  color: #2e3132;
 }
 
 .app {
@@ -27,7 +27,7 @@ h6 {
 
 .sidebar {
   width: 240px;
-  background: #E1E3E4;
+  background: #e1e3e4;
   padding: 20px;
   border-right: 1px solid #e5e7eb;
   display: flex;
@@ -37,13 +37,11 @@ h6 {
 .sidebar h1 {
   font-size: 20px;
   margin-bottom: 20px;
-
 }
 
 .sidebar P {
   font-size: 12px;
   margin-top: -1rem;
-
 }
 
 .sidebar ul {
@@ -78,7 +76,7 @@ h6 {
   padding: 25px;
 }
 
-.para{
+.para {
   margin-bottom: 3rem;
 }
 
@@ -172,11 +170,11 @@ h6 {
 }
 
 .amount {
-  font-weight: 600
+  font-weight: 600;
 }
 
 .det {
-  font-weight: 600
+  font-weight: 600;
 }
 
 .btn-edit {
@@ -234,7 +232,7 @@ h6 {
 .form-group input {
   width: 36rem;
   padding: 8px;
-  background-color: #E1E3E4;
+  background-color: #e1e3e4;
 }
 
 .form-row {
@@ -275,7 +273,7 @@ h6 {
   padding: 15px;
   font-size: 14px;
   color: #2563eb;
-  background-color: #E1E3E4;
+  background-color: #e1e3e4;
   cursor: pointer;
   border-top: 1px solid #e5e7eb;
 }
@@ -425,7 +423,7 @@ table {
 }
 
 thead {
-  background: #E1E3E4;
+  background: #e1e3e4;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 15px;
@@ -438,11 +436,10 @@ td {
   padding: 12px;
   text-align: left;
   padding-left: 25px;
-
 }
 
 tr td {
-  font-size: 13px
+  font-size: 13px;
 }
 
 .blue-text {
@@ -455,7 +452,6 @@ tr td {
   border-radius: 20px;
   font-size: 12px;
 }
-
 
 .logged {
   background: #dbeafe;
@@ -552,7 +548,6 @@ tr td {
 .all-pages {
   margin-left: 17px;
 }
-
 
 /* Header */
 .settings-header h1 {
@@ -682,7 +677,6 @@ tr td {
 .history-table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 .history-table th {
@@ -796,12 +790,7 @@ button:disabled {
   width: 40px;
   height: 16px;
   border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    #e5e7eb 25%,
-    #d1d5db 50%,
-    #e5e7eb 75%
-  );
+  background: linear-gradient(90deg, #e5e7eb 25%, #d1d5db 50%, #e5e7eb 75%);
   background-size: 200% 100%;
   animation: shimmer 1.2s infinite;
 }
@@ -815,22 +804,21 @@ button:disabled {
   }
 }
 
-.daily-list{
+.daily-list {
   font-weight: 600;
 }
 
 /*  Mobile (max 768px) */
 
 @media (max-width: 768px) {
-
-   .app {
+  .app {
     flex-direction: column;
   }
 
   .sidebar {
     width: 100%;
-    height: auto;             
-    min-height: 80px;         
+    height: auto;
+    min-height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -839,7 +827,7 @@ button:disabled {
     border-right: none;
   }
 
-    .sidebar a {
+  .sidebar a {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -850,7 +838,7 @@ button:disabled {
     font-size: 12px;
     font-weight: 600;
     color: #4b5563;
-    height: 70px;            
+    height: 70px;
   }
 
   .sidebar h1,
@@ -871,8 +859,8 @@ button:disabled {
     margin: 0;
   }
 
- .sidebar a svg {
-    font-size: 22px ;
+  .sidebar a svg {
+    font-size: 22px;
   }
 
   .sidebar a.active {
@@ -880,7 +868,7 @@ button:disabled {
     color: #2563eb;
   }
 
-   .main {
+  .main {
     margin-top: 10px;
     padding: 15px;
   }
@@ -890,12 +878,10 @@ button:disabled {
     align-items: flex-start;
     gap: 10px;
   }
-  
 
   .analytics-card {
     grid-template-columns: 1fr 1fr;
   }
-  
 
   .analytics-cell {
     border-right: none;
@@ -958,7 +944,6 @@ button:disabled {
 /*  Tablet (768px - 1024px) */
 
 @media (max-width: 1024px) {
-
   .analytics-card {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -980,14 +965,11 @@ button:disabled {
   }
 }
 
-
 @media (max-width: 1200px) {
-
   .analytics-card {
     grid-template-columns: repeat(4, 1fr);
   }
 }
-
 
 @media (max-width: 768px) {
   .analytics-card {
@@ -995,16 +977,14 @@ button:disabled {
   }
 
   .analytics-cell {
-    border-right: none;              
-    border-bottom: 0.5px solid #e0e0e0; 
+    border-right: none;
+    border-bottom: 0.5px solid #e0e0e0;
   }
 
-  
   .analytics-cell:nth-child(2n) {
     border-right: none;
   }
 
-  
   .analytics-cell:last-child {
     grid-column: span 2;
     border-bottom: none;
